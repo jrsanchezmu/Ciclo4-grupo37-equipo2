@@ -1,0 +1,5 @@
+{
+    "MONGO_URI_SERVER": "mongodb+srv://misionTic2022:misionTic2022@cluster0.h16jt3y.mongodb.net/?retryWrites=true&w=majority", 
+    "MONGO_URI_LOCAL": "mongodb://localhost",
+    "LOCAL_PORT": 27017
+}
