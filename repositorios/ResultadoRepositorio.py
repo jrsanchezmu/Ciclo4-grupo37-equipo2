@@ -1,29 +1,32 @@
-from repositorios.interfazRepositorio import InterfazRepositorio
-from models.resultados import Resultado
+from Repositorios.InterfazRepositorio import InterfazRepositorio
+from Modelos.Resultado import Resultado
 from bson import ObjectId
 
-class ResultadosRepositorio(InterfazRepositorio[Resultado]):
+class ResultadoRepositorio(InterfazRepositorio[Resultado]):
 
     #Devuelve los candidatos votados en la mesa
     def getListadoCandidatosInscritosMesa(self, id_mesa):
         theQuery = {"mesa.$id": ObjectId(id_mesa)}
         return self.query(theQuery)
-    
-    #Funcion que revisa el candidato votado en cada mesa
+
+    #Función que revisa el canadidato votado en cada mesa
     def getListadoMesasCandidatoInscrito(self, id_candidato):
         theQuery = {"candidato.$id": ObjectId(id_candidato)}
         return self.query(theQuery)
     
-    #Devuelve la cedula más grande o sea la cedula  mas nueva
+
+    #Devuelve la cédula más grande osea la cédula más nueva
     def getNumeroCedulaMayorCandidato(self):
         query1 = {
-            "$gruop":{
+            "$group":{
                 "_id":"$candidato",
-                "max" :{
-                    "$max":"$cedula"
+                "Total votos en todas las mesas":{
+                    "$sum": 1
                 },
-                "doc":{"$first":"$$ROOT"}
-            }
+                "doc":{"$first":"$$ROOT"
+                }
+            },
         }
         pipeline = [query1]
         return self.queryAggregation(pipeline)
+

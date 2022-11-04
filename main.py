@@ -1,12 +1,11 @@
-import json
 from flask import Flask, request, Response
 from flask import jsonify
 from flask_cors import CORS
 
-from controllers.candidatoControlador import CandidatoControlador
-from controllers.partidoControlador import PartidoControlador
-from controllers.mesaControlador import MesaControlador
-from controllers.resultadoControlador import ResultadoControlador
+from Controladores.CandidatoControlador import CandidatoControlador
+from Controladores.PartidoControlador import PartidoControlador
+from Controladores.MesaControlador import MesaControlador
+from Controladores.ResultadoControlador import ResultadoControlador
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -24,7 +23,6 @@ def test():
     json = {}
     json["message"] = "Server running ... :)"
     return jsonify(json)
-
 
 ###########################################
 ###      ENDPOINTS PARTIDOS             ###
@@ -139,7 +137,7 @@ def getResultado(id):
 @app.route("/resultados/mesa/<string:id_mesa>/candidato/<string:id_candidato>", methods=["POST"])
 def crearResultado(id_mesa, id_candidato):
     data = request.get_json()
-    json = miControladorResultado.create(id_mesa, id_candidato)
+    json = miControladorResultado.create(data, id_mesa, id_candidato)
     return jsonify(json)
 
 #Modificar un resultado a una mesa
@@ -155,7 +153,7 @@ def eliminarResultado(id):
     return jsonify(json)
 
 # Mirar los resultados de una mesa en particular
-@app.route("/resultados/mesas/<string:id_mesa>", methods=["GET"])
+@app.route("/resultados/mesa/<string:id_mesa>", methods=["GET"])
 def inscritosEnMesa(id_mesa):
     json = miControladorResultado.getListarCandidatosMesa(id_mesa)
     return jsonify(json)
@@ -174,4 +172,3 @@ def getMaxDocument():
 
 if __name__ == "__main__":
     app.run(debug=False, port=9000)
-
